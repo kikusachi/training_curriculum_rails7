@@ -13,11 +13,12 @@ class CalendarsController < ApplicationController
   end
 
   private
-
+  # カレンダーの予定を追加するようのストロングパラメータ
   def plan_params
     params.require(:calendars).permit(:date, :plan)
   end
 
+  #１週間分の日付を取得する関数
   def get_week
     wdays = ['(日)','(月)','(火)','(水)','(木)','(金)','(土)']
 

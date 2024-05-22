@@ -2,8 +2,9 @@ class CalendarsController < ApplicationController
 
   # １週間のカレンダーと予定が表示されるページ
   def index
-    getWeek
-    #Planテーブルに情報を追加
+
+    get_week
+
     @plan = Plan.new
   end
 
@@ -15,13 +16,14 @@ class CalendarsController < ApplicationController
   end
 
   private
-
+  # カレンダーの予定を追加するようのストロングパラメータ
   def plan_params
     #:calendars←コントローラーで受け取りたいキーを指す
     params.require(:plan).permit(:date, :plan)
   end
 
-  def getWeek
+  #１週間分の日付を取得する関数
+  def get_week
     wdays = ['(日)','(月)','(火)','(水)','(木)','(金)','(土)']
 
     # Dateオブジェクトは、日付を保持しています。下記のように`.today.day`とすると、今日の日付を取得できます。
@@ -38,6 +40,7 @@ class CalendarsController < ApplicationController
         today_plans.push(plan.plan) if plan.date == @todays_date + x
       end
 
+
       # wdayメソッドを用いて取得した数値
       wday_num = (@todays_date + x).wday
       #「wday_numが7以上の場合」という条件式
@@ -47,6 +50,7 @@ class CalendarsController < ApplicationController
 
       #wdaysを使うと曜日が取り出せる・(@todays_date + x)で日にちをずらし目的の日数分取得
       days = { :month => (@todays_date + x).month, :date => (@todays_date+x).day, :plans => today_plans, :wdays => wdays[wday_num]}
+
       @week_days.push(days)
     end
 

@@ -3,11 +3,13 @@ class CalendarsController < ApplicationController
   # １週間のカレンダーと予定が表示されるページ
   def index
     getWeek
+    #Planテーブルに情報を追加
     @plan = Plan.new
   end
 
   # 予定の保存
   def create
+    #planテーブルに情報を追加・保存する
     Plan.create(plan_params)
     redirect_to action: :index
   end
@@ -15,7 +17,8 @@ class CalendarsController < ApplicationController
   private
 
   def plan_params
-    params.require(:calendars).permit(:date, :plan)
+    #:calendars←コントローラーで受け取りたいキーを指す
+    params.require(:plan).permit(:date, :plan)
   end
 
   def getWeek
